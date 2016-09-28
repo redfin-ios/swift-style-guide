@@ -1,5 +1,8 @@
-# Redfin Swift Style Guide.
-# Adapted from raywenderlich.com style guide
+# Redfin Swift Style Guide
+
+Our style guide has been adapted from the raywenderlich.com style guide. Please note that our existing codebase may not always follow these patterns because they have evolved over time, but all new code going forward should follow them.
+
+Please help us improve our codebase by referring to this style guide for all pull requests.
 
 Our overarching goals are conciseness, readability, and simplicity.
 
