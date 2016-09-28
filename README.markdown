@@ -1,10 +1,7 @@
-# The Official raywenderlich.com Swift Style Guide.
-
-This style guide is different from others you may see, because the focus is centered on readability for print and the web. We created this style guide to keep the code in our books, tutorials, and starter kits nice and consistent — even though we have many different authors working on the books.
+# Redfin Swift Style Guide.
+# Adapted from raywenderlich.com style guide
 
 Our overarching goals are conciseness, readability, and simplicity.
-
-Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/raywenderlich/objective-c-style-guide) too.
 
 ## Table of Contents
 
@@ -12,11 +9,7 @@ Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/
 * [Naming](#naming)
   * [Protocols](#protocols)
   * [Enumerations](#enumerations)
-  * [Prose](#prose)
-  * [Selectors](#selectors)
-  * [Generics](#generics)
   * [Class Prefixes](#class-prefixes)
-  * [Language](#language)
 * [Code Organization](#code-organization)
   * [Protocol Conformance](#protocol-conformance)
   * [Unused Code](#unused-code)
@@ -28,17 +21,14 @@ Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/
   * [Protocol Conformance](#protocol-conformance)
   * [Computed Properties](#computed-properties)
   * [Final](#final)
-* [Function Declarations](#function-declarations)
 * [Closure Expressions](#closure-expressions)
 * [Types](#types)
   * [Constants](#constants)
   * [Static Methods and Variable Type Properties](#static-methods-and-variable-type-properties)
   * [Optionals](#optionals)
   * [Struct Initializers](#struct-initializers)
-  * [Lazy Initialization](#lazy-initialization)
   * [Type Inference](#type-inference)
   * [Syntactic Sugar](#syntactic-sugar)
-* [Functions vs Methods](#functions-vs-methods)
 * [Memory Management](#memory-management)
   * [Extending Lifetime](#extending-lifetime)
 * [Access Control](#access-control)
@@ -46,9 +36,7 @@ Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/
 * [Golden Path](#golden-path)
   * [Failing Guards](#failing-guards)
 * [Semicolons](#semicolons)
-* [Parentheses](#parentheses)
 * [Copyright Statement](#copyright-statement)
-* [Smiley Face](#smiley-face)
 * [Credits](#credits)
 
 
@@ -135,23 +123,6 @@ enum Shape {
 }
 ```
 
-### Prose
-
-When referring to functions in prose (tutorials, books, comments) include the required parameter names from the caller's perspective or `_` for unnamed parameters. Examples:
-
-> Call `convertPointAt(column:row:)` from your own `init` implementation.
->
-> If you call `dateFromString(_:)` make sure that you provide a string with the format "yyyy-MM-dd".
->
-> If you call `timedAction(afterDelay:perform:)` from `viewDidLoad()` remember to provide an adjusted delay value and an action to perform.
->
-> You shouldn't call the data source method `tableView(_:cellForRowAtIndexPath:)` directly.
-
-This is the same as the `#selector` syntax. When in doubt, look at how Xcode lists the method in the jump bar – our style here matches that.
-
-![Methods in Xcode jump bar](screens/xcode-jump-bar.png)
-
-
 ### Class Prefixes
 
 Swift types are automatically namespaced by the module that contains them and you should not add a class prefix such as RW. If two names from different modules collide you can disambiguate by prefixing the type name with the module name. However, only specify the module name when there is possibility for confusion which should be rare.
@@ -161,53 +132,6 @@ import SomeModule
 
 let myClass = MyModule.UsefulClass()
 ```
-
-### Selectors
-
-Selectors are Obj-C methods that act as handlers for many Cocoa and Cocoa Touch APIs. Prior to Swift 2.2, they were specified using type unsafe strings. This now causes a compiler warning. The "Fix it" button replaces these strings with the **fully qualified** type safe selector. Often, however, you can use context to shorten the expression. This is the preferred style.
-
-**Preferred:**
-```swift
-let sel = #selector(viewDidLoad)
-```
-
-**Not Preferred:**
-```swift
-let sel = #selector(ViewController.viewDidLoad)
-```
-
-### Generics
-
-Generic type parameters should be descriptive, upper camel case names. When a type name doesn't have a meaningful relationship or role, use a traditional single uppercase letter such as `T`, `U`, or `V`.
-
-**Preferred:**
-```swift
-struct Stack<Element> { ... }
-func writeTo<Target: OutputStream>(inout target: Target)
-func max<T: Comparable>(x: T, _ y: T) -> T
-```
-
-**Not Preferred:**
-```swift
-struct Stack<T> { ... }
-func writeTo<target: OutputStream>(inout t: target)
-func max<Thing: Comparable>(x: Thing, _ y: Thing) -> Thing
-```
-
-### Language
-
-Use US English spelling to match Apple's API.
-
-**Preferred:**
-```swift
-let color = "red"
-```
-
-**Not Preferred:**
-```swift
-let colour = "red"
-```
-
 ## Code Organization
 
 Use extensions to organize your code into logical blocks of functionality. Each extension should be set off with a `// MARK: -` comment to keep things well-organized.
@@ -281,14 +205,8 @@ Keep imports minimal. For example, don't import `UIKit` when importing `Foundati
 
 ## Spacing
 
-* Indent using 2 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
-
-  ![Xcode indent settings](screens/indentation.png)
-  
-  ![Xcode Project settings](screens/project_settings.png)
-
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
-* Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.
+* Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu).
 
 **Preferred:**
 ```swift
@@ -446,25 +364,6 @@ final class Box<T> {
   init(_ value: T) {
     self.value = value
   }
-}
-```
-
-## Function Declarations
-
-Keep short function declarations on one line including the opening brace:
-
-```swift
-func reticulateSplines(spline: [Double]) -> Bool {
-  // reticulate code goes here
-}
-```
-
-For functions with long signatures, add line breaks at appropriate points and add an extra indent on subsequent lines:
-
-```swift
-func reticulateSplines(spline: [Double], adjustmentFactor: Double,
-    translateConstant: Int, comment: String) -> Bool {
-  // reticulate code goes here
 }
 ```
 
@@ -636,28 +535,6 @@ let centerPoint = CGPointMake(96, 42)
 
 Prefer the struct-scope constants `CGRect.infinite`, `CGRect.null`, etc. over global constants `CGRectInfinite`, `CGRectNull`, etc. For existing variables, you can use the shorter `.zero`.
 
-
-### Lazy Initialization
-
-Consider using lazy initialization for finer grain control over object lifetime. This is especially true for `UIViewController` that loads views lazily. You can either use a closure that is immediately called `{ }()` or call a private factory method. Example:
-
-```swift
-lazy var locationManager: CLLocationManager = self.makeLocationManager()
-
-private func makeLocationManager() -> CLLocationManager {
-  let manager = CLLocationManager()
-  manager.desiredAccuracy = kCLLocationAccuracyBest
-  manager.delegate = self
-  manager.requestAlwaysAuthorization()
-  return manager
-}
-```
-
-**Notes:**
-  - `[unowned self]` is not required here. A retain cycle is not created.
-  - Location manager has a side-effect for popping up UI to ask the user for permission so fine grain control makes sense here.
-
-
 ### Type Inference
 
 Prefer compact code and let the compiler infer the type for constants or variables of single instances. Type inference is also appropriate for small (non-empty) arrays and dictionaries. When required, specify the specific type such as `CGFloat` or `Int16`.
@@ -712,30 +589,6 @@ var faxNumber: Int?
 var deviceModels: Array<String>
 var employees: Dictionary<Int, String>
 var faxNumber: Optional<Int>
-```
-
-## Functions vs Methods
-
-Free functions, which aren't attached to a class or type, should be used sparingly. When possible, prefer to use a method instead of a free function. This aids in readability and discoverability.
-
-Free functions are most appropriate when they aren't associated with any particular type or instance.
-
-**Preferred**
-```swift
-let sorted = items.mergeSort()  // easily discoverable
-rocket.launch()  // clearly acts on the model
-```
-
-**Not Preferred**
-```swift
-let sorted = mergeSort(items)  // hard to discover
-launch(&rocket)
-```
-
-**Free Function Exceptions**
-```swift
-let tuples = zip(a, b)  // feels natural as a free function (symmetry)
-let value = max(x,y,z)  // another free function that feels natural
 ```
 
 ## Memory Management
@@ -918,65 +771,6 @@ let swift = "not a scripting language";
 ```
 
 **NOTE**: Swift is very different from JavaScript, where omitting semicolons is [generally considered unsafe](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)
-
-## Parentheses
-
-Parentheses around conditionals are not required and should be omitted.
-
-**Preferred:**
-```swift
-if name == "Hello" {
-  print("World")
-}
-```
-
-**Not Preferred:**
-```swift
-if (name == "Hello") {
-  print("World")
-}
-```
-
-## Copyright Statement
-
-The following copyright statement should be included at the top of every source
-file:
-
-    /**
-     * Copyright (c) 2016 Razeware LLC
-     *
-     * Permission is hereby granted, free of charge, to any person obtaining a copy
-     * of this software and associated documentation files (the "Software"), to deal
-     * in the Software without restriction, including without limitation the rights
-     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-     * copies of the Software, and to permit persons to whom the Software is
-     * furnished to do so, subject to the following conditions:
-     *
-     * The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software.
-     *
-     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-     * THE SOFTWARE.
-     */
-
-## Smiley Face
-
-Smiley faces are a very prominent style feature of the raywenderlich.com site! It is very important to have the correct smile signifying the immense amount of happiness and excitement for the coding topic. The closing square bracket `]` is used because it represents the largest smile able to be captured using ASCII art. A closing parenthesis `)` creates a half-hearted smile, and thus is not preferred.
-
-**Preferred:**
-```
-:]
-```
-
-**Not Preferred:**
-```
-:)
-```  
 
 ## Credits
 
